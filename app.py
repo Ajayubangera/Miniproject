@@ -143,6 +143,5 @@ app.mount("/results", StaticFiles(directory=RESULTS_DIR), name="results")
 @app.get("/")
 async def root():
     return FileResponse(os.path.join(FRONTEND_DIR, "welcome.html"))
-
 # 👉 Serve all frontend files normally
 app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
