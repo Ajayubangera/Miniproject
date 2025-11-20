@@ -6,6 +6,7 @@ import json
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 # ===== Correct Utils Imports =====
 from backend.utils.detect_faces_from_video import detect_faces_from_video
@@ -19,6 +20,7 @@ TEMP_DIR = os.path.join(BASE_DIR, "temp")
 RESULTS_DIR = os.path.join(BASE_DIR, "results")
 FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
 
+# Create necessary folders
 for d in [UPLOAD_DIR, TEMP_DIR, RESULTS_DIR]:
     os.makedirs(d, exist_ok=True)
 
@@ -42,14 +44,14 @@ LAST_MAPPING_PATH = os.path.join(TEMP_DIR, "last_faces_map.json")
 @app.post("/upload_video")
 async def upload_video(video: UploadFile = File(...)):
     try:
-        # Save uploaded video
         filename = f"{uuid.uuid4().hex}_{video.filename}"
         video_path = os.path.join(UPLOAD_DIR, filename)
 
+        # Save video
         with open(video_path, "wb") as f:
             shutil.copyfileobj(video.file, f)
 
-        # Reset face directory
+        # Reset face folder
         face_dir = os.path.join(TEMP_DIR, "faces")
         if os.path.exists(face_dir):
             shutil.rmtree(face_dir)
@@ -71,6 +73,7 @@ async def upload_video(video: UploadFile = File(...)):
                 "frontalized_image": None,
             }
 
+        # Save mapping
         with open(LAST_MAPPING_PATH, "w") as f:
             json.dump(mapping, f)
 
@@ -105,7 +108,6 @@ async def frontalize(track_id: str = Form(...)):
     entry["score"] = score
 
     if not frontal_paths:
-        entry["frontalized_image"] = None
         return {
             "frontalized_image": None,
             "match": best_person,
@@ -113,13 +115,13 @@ async def frontalize(track_id: str = Form(...)):
             "error": "No frontal image found"
         }
 
-    # Copy frontal.jpg to results
+    # Copy frontal.jpg
     out_path = frontalize_local(frontal_paths[0], RESULTS_DIR, track_id)
     out_url = f"/results/{os.path.basename(out_path)}"
 
     entry["frontalized_image"] = out_url
 
-    # save updated mapping
+    # Save updated mapping
     with open(LAST_MAPPING_PATH, "w") as f:
         json.dump(mapping, f)
 
@@ -131,9 +133,16 @@ async def frontalize(track_id: str = Form(...)):
 
 
 # ============================================================
-# STATIC FILE ROUTINGS
+# STATIC ROUTES (Frontend)
 # ============================================================
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 app.mount("/temp", StaticFiles(directory=TEMP_DIR), name="temp")
 app.mount("/results", StaticFiles(directory=RESULTS_DIR), name="results")
+
+# 👉 Serve welcome.html as the homepage
+@app.get("/")
+async def root():
+    return FileResponse(os.path.join(FRONTEND_DIR, "welcome.html"))
+
+# 👉 Serve all frontend files normally
 app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
