@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>FaceRecon</title>
+  <link rel="stylesheet" href="styler.css?v=23">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span class="logo-text">FaceRecon</span>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link">← Upload New</a>
+        </nav>
+    </header>
+
+    <section class="results-section">
+        <div class="container">
+            <div class="header-content">
+                <h1>Detected Faces</h1>
+                
+            </div>
+
+            <div id="faces-container" class="faces-grid"></div>
+            
+            <p id="alert" class="status-text"></p>
+        </div>
+    </section>
+
+  <script src="results.js"></script>
+
+</body>
+</html>
