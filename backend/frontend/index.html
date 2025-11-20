@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FaceRecon</title>
+   <link rel="stylesheet" href="style.css?v=48">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span class="logo-text">FaceRecon</span>
+        </div>
+        <nav class="nav">
+            <a href="welcome.html" class="nav-link">Home</a>
+           
+        </nav>
+    </header>
+
+    <section class="upload-section">
+        <div class="container">
+            <div class="upload-card">
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                </div>
+                
+                <h1>Upload a Video</h1>
+                
+
+                <div class="input-group">
+                    <label for="videoInput" class="input-label">Video Input</label>
+                    <input name="videoInput" type="file" id="videoInput" accept="video/*" class="file-input">
+                </div>
+
+                <button id="uploadBtn" class="action-btn">Upload & Process</button>
+                
+                <p id="alert" class="status-text"></p>
+            </div>
+        </div>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>
